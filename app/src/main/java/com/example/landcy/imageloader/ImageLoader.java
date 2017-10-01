@@ -16,15 +16,23 @@ import java.util.concurrent.Executors;
  */
 
 public class ImageLoader {
-    ImageCache mImageCache = new ImageCache();
+    ImageCache mImageCache = new MemeoryCache();
     ExecutorService mExcutorServie = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
-    public void displayImage(final String url,final ImageView imageView){
+    public void setImageCache(ImageCache imageCache) {
+        mImageCache = null;
+        mImageCache = imageCache;
+    }
+
+    public void displayImage( String url, ImageView imageView) {
         Bitmap bitmap = mImageCache.get(url);
-        if(bitmap != null){
+        if (bitmap != null) {
             imageView.setImageBitmap(bitmap);
             return;
         }
+        submitLoadRequst(url,imageView);
+    }
+    private void submitLoadRequst(final String url,final ImageView imageView){
         imageView.setTag(url);
         mExcutorServie.submit(new Runnable() {
             @Override
