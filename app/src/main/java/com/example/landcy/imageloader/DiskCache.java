@@ -1,6 +1,7 @@
 package com.example.landcy.imageloader;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.LruCache;
 
@@ -12,7 +13,7 @@ import java.io.IOException;
  */
 
 public class DiskCache implements ImageCache{
-    static String cacheDir= "sdcard/cache/";
+    private static String cacheDir= "sdcard/cache/";
     @Override
     public void put(String url, Bitmap bitmap) {
         FileOutputStream fileOutputStream = null;
@@ -33,6 +34,6 @@ public class DiskCache implements ImageCache{
     }
     @Override
     public Bitmap get(String url) {
-        return mImageCaches.get(url);
+        return BitmapFactory.decodeFile(cacheDir+url);
     }
 }
